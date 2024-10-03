@@ -1,0 +1,31 @@
+dirs:
+  ROOT_PATH: "C:/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm"
+  MODELS_BASE_DIR: "C:/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/models"
+  CACHE_DIR: "C:/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/cache"
+
+models:
+  CAUSAL_MODEL: "google/gemma-2-2b-it"
+
+sampling_parameters:
+  temperature: 0.8
+  top_p: 0.95
+  max_tokens: 100
+
+engine_args:
+  model: "google/gemma-2-2b-it"
+  tensor_parallel_size: 1
+  max_num_batched_tokens: 4096
+  dtype: "float16"
+  seed: 42
+  gpu_memory_utilization: 0.9
+  max_model_len: 2672  # Adjust as needed
+  swap_space: 4  # GB
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  timeout_keep_alive: 5  # seconds
+
+logger:
+  level: "DEBUG"
+  file: "C:/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/logs/vllm_server.log"
