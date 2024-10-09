@@ -4,7 +4,7 @@ dirs:
   CACHE_DIR: "/mnt/c/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/cache"
 
 models:
-  CAUSAL_MODEL: "google/gemma-2-2b"
+  CAUSAL_MODEL: "meta-llama/Llama-3.2-1B-Instruct"
 
 
 sampling_parameters:
@@ -13,7 +13,7 @@ sampling_parameters:
   max_tokens: 100
 
 engine_args:
-  model: "/mnt/c/Users/erdrr/OneDrive/Desktop/KB/Projects/MODELS/google/gemma-2-2b"
+  model: "/mnt/c/Users/erdrr/OneDrive/Desktop/KB/Projects/MODELS/meta-llama/Llama-3.2-1B-Instruct"
   download_dir: "/mnt/c/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/models"
   load_format: "safetensors"
   tensor_parallel_size: 1
@@ -29,6 +29,25 @@ server:
   host: "0.0.0.0"
   port: 8000
   timeout_keep_alive: 5  # seconds
+
+mongodb:
+  HOST: ['localhost', 'localhost2', 'localhost3']
+  PORT: 27017
+  DB_NAME: 'your_database_name'
+  COLLECTION: 'your_collection_name'
+
+
+vectordb:
+  VECTORSTORE_BASE_DIR: "/mnt/c/Users/erdrr/OneDrive/Desktop/KB/Projects/vllm/vectorstore"
+  FAISS_L2_INDEX: "faiss_l2.index"
+  FAISS_HNSW_INDEX: "faiss_hnsw.index"
+  EMBEDDING_DIM: 1024
+  HNSW_M: 32
+  HNSW_EF_CONSTRUCTION: 200
+
+retrieval:
+  TOP_N: 10  # Number of documents to retrieve from VectorDB
+  TOP_K: 5   # Number of documents to return after re-rankin
 
 logger:
   level: "DEBUG"
