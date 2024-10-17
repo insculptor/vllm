@@ -60,6 +60,7 @@ mongodb:
 
 ## Serving
 apiserver:
+  env: "dev"
   host: "0.0.0.0"
   vllm_port: 8000
   models_port: 8001

@@ -3,6 +3,7 @@ import os
 import sys
 from typing import AsyncGenerator
 
+import uvicorn
 from fastapi import FastAPI
 
 from src.models_engine.api.models_manager import ModelsManager
@@ -11,6 +12,11 @@ from src.utils.config import ConfigLoader
 
 # Add project root to system path
 sys.path.insert(0, os.getenv('ROOT_DIR'))
+
+config = ConfigLoader()
+host = config.get("apiserver")["host"]
+port = config.get("apiserver")["models_port"]
+env = config.get("apiserver")["env"]
 
 async def lifespan(app: FastAPI) -> AsyncGenerator:
     """Lifespan event handler to initialize and shut down resources."""
@@ -28,8 +34,6 @@ app = FastAPI(
 app.include_router(router)
 
 if __name__ == "__main__":
-    import uvicorn
-    config = ConfigLoader()
-    host = config.get("apiserver")["host"]
-    port = config.get("apiserver")["models_port"]
-    uvicorn.run(app, host=host, port=port)
+    if env != "test":
+        uvicorn.run(app, host=host, port=port, reload=True)
+

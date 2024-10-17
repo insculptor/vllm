@@ -2,6 +2,7 @@
 .env
 **.profile
 **.pyc
+**.coverage
 
 ## Dir
 /logs/*

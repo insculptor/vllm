@@ -3,3 +3,10 @@ fastapi
 uvicorn
 pyyaml
 pydantic
+pytest 
+pytest-asyncio 
+httpx 
+fastapi[all] 
+pytest-mock
+pytest-cov
+sentence-transformers
