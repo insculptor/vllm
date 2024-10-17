@@ -17,3 +17,6 @@ class RerankerRequest(BaseModel):
     """
     query: str  # The query text
     documents: List[str]  # List of documents to be reranked
+
+class SummarizationRequest(BaseModel):
+    input_text: str  # The input text to be summarized

@@ -6,8 +6,7 @@ sys.path.insert(0, os.getenv('ROOT_DIR'))
 import requests
 import streamlit as st
 
-# Define the API endpoint for reranking
-API_URL = "http://localhost:8001/v1/reranker"
+import src.utils.constants as c
 
 st.title("Reranker")
 
@@ -30,7 +29,7 @@ if st.button("Rerank"):
 
         # Make the POST request
         try:
-            response = requests.post(API_URL, json=payload)
+            response = requests.post(c.RERANKER_API_URL, json=payload)
             if response.status_code == 200:
                 result = response.json()
                 st.write("### Reranked Documents:")

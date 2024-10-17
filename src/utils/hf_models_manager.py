@@ -6,9 +6,6 @@
 ####################################################################################
 
 import os
-import sys
-
-sys.path.insert(0, os.getenv('ROOT_DIR'))
 
 from huggingface_hub import login, snapshot_download
 from transformers import AutoModelForCausalLM, AutoTokenizer

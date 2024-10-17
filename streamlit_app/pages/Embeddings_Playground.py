@@ -6,10 +6,9 @@ sys.path.insert(0, os.getenv('ROOT_DIR'))
 import requests
 import streamlit as st
 
-# Embedding API URL
-EMBEDDING_API_URL = "http://localhost:8001/v1/embeddings"
+from src.utils.constants import EMBEDDING_API_URL
 
-st.title("Embedding Generator")
+st.title("Embedding Playground")
 
 # Collect multiple texts for embedding
 input_texts = st.text_area("Enter multiple texts (one per line)", "").splitlines()

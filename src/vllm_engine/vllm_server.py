@@ -4,7 +4,6 @@ import os
 import subprocess
 import sys
 
-# Add root directory to Python path
 sys.path.insert(0, os.getenv('ROOT_DIR'))
 
 # Import config and logger utilities

@@ -8,9 +8,10 @@ dirs:
 
 ## Models
 models:
-  CAUSAL_MODEL: "meta-llama/Llama-3.2-3B-Instruct"
+  CAUSAL_MODEL: "facebook/bart-large-cnn" #"meta-llama/Llama-3.2-3B-Instruct"
   EMBEDDING_MODEL: "/home/ravi/Desktop/KB/projects/MODELS/WhereIsAI/UAE-Large-V1"
   RERANKER_MODEL: "/home/ravi/Desktop/KB/projects/MODELS/mixedbread-ai/mxbai-rerank-large-v1"
+  SUMMARIZATION_MODEL: "/home/ravi/Desktop/KB/projects/MODELS/facebook/bart-large-cnn"
 
 ## vLLM Args
 sampling_parameters:
@@ -36,8 +37,19 @@ engine_args:
 vectordb:
   FAISS_L2_INDEX: "faiss_l2.index"
   EMBEDDING_DIM: 1024
+  CHUNK_SIZE: 350
+  CHUNK_OVERLAP: 50
+  MEGA_CHUNK_MULTIPLIER: 10
   TOP_N: 10 # Documents fetched from VectorDB
   TOP_K: 2 # Documents returned after reranking
+
+
+summarize:
+  MAX_LENGTH: 350 ## Same as Chunk Size
+  MIN_LENGTH: 50
+  LENGTH_PENALTY: 2.0
+  NUM_BEAMS: 4
+  EARLY_STOPPING: True
 
 mongodb:
   HOST: ['localhost', 'localhost2', 'localhost3']

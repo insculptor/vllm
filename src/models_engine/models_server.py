@@ -1,5 +1,4 @@
 # src/models_engine/models_server.py
-
 import os
 import sys
 from typing import AsyncGenerator
@@ -20,7 +19,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     await models_manager.shutdown()  # Clean up models
 
 # Initialize FastAPI app with lifespan
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="Models API",
+    description="This API provides embedding, reranking, and summarization models hosted on GPU.",
+    version="1.0.0",
+    lifespan=lifespan
+)
 app.include_router(router)
 
 if __name__ == "__main__":
