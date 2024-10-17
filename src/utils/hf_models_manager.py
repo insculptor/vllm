@@ -6,11 +6,14 @@
 ####################################################################################
 
 import os
+import sys
+
+sys.path.insert(0, os.getenv('ROOT_DIR'))
 
 from huggingface_hub import login, snapshot_download
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from vllm.utils.config import ConfigLoader
+from src.utils.config import ConfigLoader
 
 
 class HFModelsManager:
@@ -24,10 +27,11 @@ class HFModelsManager:
                                         Defaults to the path from the YAML configuration.
         """
         # Load the configuration based on the environment using ConfigLoader
-        config_loader = ConfigLoader()
+        config = ConfigLoader()
 
         self.repo_name = repo_name
-        self.model_base_dir = model_path or config_loader.get('MODELS_BASE_DIR', './models')
+        self.model_base_dir = model_path or config.get('MODELS_BASE_DIR', './models')
+        print(f"Saving Model to: {self.model_base_dir}")
         self.token = os.getenv('HUGGINGFACE_TOKEN')
 
         if not self.token:
@@ -89,10 +93,10 @@ if __name__ == "__main__":
     # Use the model defined in the YAML configuration
     config_loader = ConfigLoader()
     repo_name = config_loader.get('models')['CAUSAL_MODEL']
+    model_path = config_loader.get('dirs')['MODELS_BASE_DIR']
 
     # Instantiate the HFModelsManager
-    manager = HFModelsManager(repo_name=repo_name)
+    manager = HFModelsManager(repo_name=repo_name,model_path=model_path)
 
     # Initialize the model and tokenizer
     model, tokenizer = manager.initialize_model()
-    print(model, tokenizer)

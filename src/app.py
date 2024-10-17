@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.routes import router
-from src.api.vllm_engine_manager import lifespan
 from src.utils.config import ConfigLoader
 from src.utils.logger import setup_logger
+from src.vllm_engine.api.routes import router
+from src.vllm_engine.api.vllm_engine_manager import lifespan
 
 # Initialize logger and config
 logger = setup_logger()
@@ -16,8 +16,7 @@ app = FastAPI(lifespan=lifespan)
 # Include routes from routes.py
 app.include_router(router)
 
-if __name__ == "__main__":
-    # Load server configuration    
+if __name__ == "__main__":  
     logger.info("Starting Uvicorn server.")
     uvicorn.run(
         app,

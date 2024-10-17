@@ -1,7 +1,7 @@
 # src/utils/logger.py
-
 import logging
 import logging.config
+import os
 
 import colorlog
 
@@ -9,32 +9,39 @@ from src.utils.config import ConfigLoader
 
 print(colorlog.__file__)
 
-
-def setup_logger(log_level: str = 'INFO'):
+def setup_logger(log_file_name: str = None, logger_name: str = None):
     """
     Sets up logging with color-coded console output and file logging.
 
     Args:
-        log_level (str): The logging level (e.g., 'DEBUG', 'INFO', 'WARNING', etc.).
+        log_file_name (str): Optional log file name. If not provided, use the default from YAML config.
+        logger_name (str): Name for the logger (e.g., module name). Defaults to 'root'.
 
     Returns:
-        logger: Configured logger for 'vllm-server'.
+        logger: Configured logger.
     """
     # Load configuration
     config_loader = ConfigLoader()
     logger_config = config_loader.get('logger', {})
-    log_level = logger_config["level"].upper()
-    log_file = logger_config["file"]
+    log_dir = config_loader.get('dirs')['LOG_DIR']
+    log_level = logger_config.get('level', 'INFO').upper()
+
+    # Use provided file name or default from config
+    log_file = log_file_name or logger_config.get("file", "vllm_engine.log")
+    log_file_path = os.path.join(log_dir, log_file)
+
+    # Ensure log directory exists
+    os.makedirs(log_dir, exist_ok=True)
 
     # Define logging configuration
     logging_config = {
         'version': 1,
-        'disable_existing_loggers': False,  # Keep existing loggers active
+        'disable_existing_loggers': False,
         'formatters': {
-            'standard': {  # Formatter for file handler
+            'standard': {
                 'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             },
-            'color': {  # Formatter for console handler with colorlog
+            'color': {
                 '()': 'colorlog.ColoredFormatter',
                 'format': '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                 'log_colors': {
@@ -44,50 +51,32 @@ def setup_logger(log_level: str = 'INFO'):
                     'ERROR': 'red',
                     'CRITICAL': 'bold_red',
                 },
-                'secondary_log_colors': {},
                 'style': '%',
             },
         },
         'handlers': {
-            'console': {  # Console handler with color coding
+            'console': {
                 'class': 'logging.StreamHandler',
                 'formatter': 'color',
                 'level': log_level,
             },
-            'file': {  # File handler
+            'file': {
                 'class': 'logging.FileHandler',
                 'formatter': 'standard',
-                'filename': log_file,
+                'filename': log_file_path,
                 'level': log_level,
             },
         },
-        'loggers': {
-            'vllm': {  # Logger for vllm
-                'handlers': ['console', 'file'],
-                'level': log_level,
-                'propagate': False,
-            },
-            'vllm-server': {  # Logger for vllm-server
-                'handlers': ['console', 'file'],
-                'level': log_level,
-                'propagate': False,
-            },
-            # Include any other loggers you want to configure
-        },
-        'root': {  # Root logger
+        'root': {
             'handlers': ['console', 'file'],
             'level': log_level,
         },
     }
 
-    # Apply logging configuration
+    # Apply the logging configuration
     logging.config.dictConfig(logging_config)
 
-    # Get the vllm-server logger
-    logger = logging.getLogger('vllm-server')
-
-    # Optionally set the logging level for vllm if needed
-    vllm_logger = logging.getLogger('vllm')
-    vllm_logger.setLevel(log_level)
-
+    # Create and return the logger with the given name
+    logger = logging.getLogger(logger_name)
+    logger.debug(f"Logger initialized. Log file: {log_file_path}")
     return logger

@@ -1,4 +1,10 @@
+## Files
 .env
+**.profile
+**.pyc
+
+## Dir
 /logs/*
 logs/
 /cache/*
+/__pycache__/

@@ -15,7 +15,7 @@ st.write("""
 input_text = st.text_area("Input Text", placeholder="Enter some text for the model to complete...")
 
 # Define optional parameters (max_tokens, temperature, etc.)
-max_tokens = st.number_input("Max Tokens", min_value=1, max_value=512, value=100)
+max_tokens = st.number_input("Max Tokens", min_value=1, max_value=2048, value=1024)
 temperature = st.slider("Temperature", min_value=0.1, max_value=2.0, value=0.8)
 top_p = st.slider("Top P", min_value=0.1, max_value=1.0, value=0.9)
 
